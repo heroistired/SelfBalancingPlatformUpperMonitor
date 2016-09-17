@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="Drawer.exe" version="1.0.0.0" publicKeyToken="97dc7ac1ecbf91f2" language="neutral" processorArchitecture="msil" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="Drawer" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="Drawer.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC 清单选项
+          如果要更改 Windows 用户帐户控制级别，请用以下节点之一替换
+          requestedExecutionLevel 节点。
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+          如果要利用文件和注册表虚拟化提供
+          向后兼容性，请删除 requestedExecutionLevel 节点。
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Drawer.exe" size="19456">
+      <assemblyIdentity name="Drawer" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>UHM34EzG/Da2X8HDQsuO1Ty6N2I=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+<publisherIdentity name="CN=doyoung-PC\doyoung" issuerKeyHash="a73323ff75642d235d15faed9317b2301885db13" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>CPqiuTy10/UYMdW2evh6A6f0Rv8=</DigestValue></Reference></SignedInfo><SignatureValue>TY7D8EaNmT8qV2H/y4vU96z6KUgODb+wpjEsVNALqiUVuxNa74u1fZRBVHisSkME+f+BU66dIysJAY3Q+pRFWDxxAijUM/9JYiB4ObdY52XIM/iCtcNQDtp8gPc5MUlOhAwrGT5kVFgn9gOIJ/UOy+yJfgun1yNptTkfZKqQ/6g=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>s1RTLr0Xok4c+nLDy7J4aKlXXSJQeJZRcFDYxKoO7upNFYGYFkkIPK32izX5C1pM11F4qzM8AYbN0t4tmFnl/UC0dLZ6mJlYl/EzckbWMn2dbAeB6w5mQHxirLEy5kRx278GY2ZvLWQr9gGgud8tMGWVz3ZCQb7xZ0oREWlIMlE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="ff46f4a7037af87ab6d53118f5d3b53cb9a2fa08" Description="" Url=""><as:assemblyIdentity name="Drawer.exe" version="1.0.0.0" publicKeyToken="97dc7ac1ecbf91f2" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=doyoung-PC\doyoung</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>mEN0D/KWN6wjtolS/1vgDWscDmw=</DigestValue></Reference></SignedInfo><SignatureValue>UxS2miyO7FOtg6/j9SfK0aUOUABbm3u2lbwitRZi+VqF4bJ6s2PUC4criZZWNyj+h4Sago0/gJf8Nd3TGOVgEpgdVoYG66OZUOam5wJUJhHmuzl+khcTQkYtssoAETIWjg3k9R9HnPz7N1OQ4djNa5IEWAaA892PoWREIrqAups=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>s1RTLr0Xok4c+nLDy7J4aKlXXSJQeJZRcFDYxKoO7upNFYGYFkkIPK32izX5C1pM11F4qzM8AYbN0t4tmFnl/UC0dLZ6mJlYl/EzckbWMn2dbAeB6w5mQHxirLEy5kRx278GY2ZvLWQr9gGgud8tMGWVz3ZCQb7xZ0oREWlIMlE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB4TCCAUqgAwIBAgIQYigdnHeZQLNMnwvg9H7j7DANBgkqhkiG9w0BAQUFADAvMS0wKwYDVQQDHiQAZABvAHkAbwB1AG4AZwAtAFAAQwBcAGQAbwB5AG8AdQBuAGcwHhcNMTQwMTE0MTQ0OTU4WhcNMTUwMTE0MjA0OTU4WjAvMS0wKwYDVQQDHiQAZABvAHkAbwB1AG4AZwAtAFAAQwBcAGQAbwB5AG8AdQBuAGcwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALNUUy69F6JOHPpyw8uyeGipV10iUHiWUXBQ2MSqDu7qTRWBmBZJCDyt9os1+QtaTNdReKszPAGGzdLeLZhZ5f1AtHS2epiZWJfxM3JG1jJ9nWwHgesOZkB8YqyxMuZEcdu/BmNmby1kK/YBoLnfLTBllc92QkG+8WdKERFpSDJRAgMBAAEwDQYJKoZIhvcNAQEFBQADgYEAUhfTDeqG+I1OSX+MLs/veHXJniKsBPicZMnfoeb9E1WaXaYWg1m2lY54cMY3VUHSoCLv7NAeE+nwzlnoDawFi92Uzmzo05h7IvUduSfhYYZEM/1kzF6JGaTTSiahN07RLk3RBIrFOzRgEKm+RpblAvKZEaTFsZ4Ow1TEWhdZgco=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

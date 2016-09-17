@@ -1,0 +1,19 @@
+E:\我的程序\课件\adc绘制\Drawer\Drawer\bin\Debug\Drawer.exe
+E:\我的程序\课件\adc绘制\Drawer\Drawer\bin\Debug\Drawer.pdb
+E:\我的程序\课件\adc绘制\Drawer\Drawer\obj\Debug\Drawer.csprojResolveAssemblyReference.cache
+E:\我的程序\课件\adc绘制\Drawer\Drawer\obj\Debug\Drawer.Form1.resources
+E:\我的程序\课件\adc绘制\Drawer\Drawer\obj\Debug\Drawer.Properties.Resources.resources
+E:\我的程序\课件\adc绘制\Drawer\Drawer\obj\Debug\Drawer.csproj.GenerateResource.Cache
+E:\我的程序\课件\adc绘制\Drawer\Drawer\obj\Debug\Drawer.exe
+E:\我的程序\课件\adc绘制\Drawer\Drawer\obj\Debug\Drawer.pdb
+E:\我的程序\课件\adc绘制\多窗口+ADC Box\Drawer\obj\Debug\Drawer.exe
+E:\我的程序\课件\adc绘制\多窗口+ADC Box\Drawer\obj\Debug\Drawer.pdb
+E:\我的程序\课件\adc绘制\多窗口+ADC Box\Drawer\bin\Debug\Drawer.exe
+E:\我的程序\课件\adc绘制\多窗口+ADC Box\Drawer\bin\Debug\Drawer.pdb
+E:\我的程序\课件\adc绘制\多窗口+ADC Box\Drawer\obj\Debug\Drawer.csprojResolveAssemblyReference.cache
+E:\我的程序\课件\adc绘制\多窗口+ADC Box\Drawer\obj\Debug\Drawer.Drawer.resources
+E:\我的程序\课件\adc绘制\多窗口+ADC Box\Drawer\obj\Debug\Drawer.MainForm.resources
+E:\我的程序\课件\adc绘制\多窗口+ADC Box\Drawer\obj\Debug\Drawer.Properties.Resources.resources
+E:\我的程序\课件\adc绘制\多窗口+ADC Box\Drawer\obj\Debug\Drawer.csproj.GenerateResource.Cache
+E:\B1视频\B15入门C#设计\视频相关资料及程序\第20集：相关程序\多窗口+ADC Box\Drawer\obj\Debug\Drawer.exe
+E:\B1视频\B15入门C#设计\视频相关资料及程序\第20集：相关程序\多窗口+ADC Box\Drawer\obj\Debug\Drawer.pdb
