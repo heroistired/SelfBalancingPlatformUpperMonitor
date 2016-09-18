@@ -168,14 +168,6 @@ namespace Drawer
                         }
                         else if (i.Substring(1, 4) == "1003") //CMD_ROLL
                         {
-                            try
-                            {
-                                now_roll = float.Parse(i.Substring(5, i.Length - 6));
-                            }
-                            catch 
-                            { }
-                            label18.Text = (now_roll / 10).ToString() + "°";
-                            count++;
                         }
                         else if (i.Substring(1, 4) == "1004") //CMD_DEGREE1
                         {
@@ -236,41 +228,8 @@ namespace Drawer
                         }
                         else if (i.Substring(1, 4) == "1011") //CMD_FELLOW_TEST
                         {
-                            try
-                            {
-                                if (draw_fellow_test_curce)
-                                {
-                                    if (!fellow_test_curce_added)
-                                    {
-                                        x_Excitation.Clear();
-                                        y_Excitation.Clear();
-                                        zGraph1.f_AddPix(ref x_Excitation, ref y_Excitation, Color.Blue, 2);
-                                        fellow_test_curce_added = true;
-                                    }
-                                    x_Excitation.Add(count_fellow_test);
-                                    y_Excitation.Add(count_fellow_test);
-                                    //y_Excitation.Add(float.Parse(i.Substring(5, i.Length - 6)) / 10);
-                                    count_fellow_test++;
-                                   // zGraph1.f_Refresh();
-                                    if (count_fellow_test % 100 == 0)
-                                        zGraph1.f_Refresh();
-                                }
-
-                                if (count_fellow_test > 500)
-                                {
-                                    x_Excitation.Clear();
-                                    y_Excitation.Clear();
-                                    zGraph1.f_ClearAllPix();
-                                    count_fellow_test = 0;
-                                    fellow_test_curce_added = false;
-                                }
-
-                            }
-                            catch
-                            { }
                         }
                     }
-                    label6.Text = count.ToString();
                 }
                 if (!draw_fellow_test_curce)
                 {
@@ -339,67 +298,16 @@ namespace Drawer
                                         Array.Clear(buffer1, 0, 11);
                                         if (CMD == CMD_CLOCK)
                                         {
-                                            count_clock++;
-                                            label22.Text = count_clock.ToString();
-                                            if (count_clock > 2000)
-                                            {
-                                                count_clock = 0;
-                                                pitch_curce_added = false;
-                                                fellow_test_curce_added = false;
-                                                yaw_curce_added = false;
-                                                zGraph1.f_ClearAllPix();
-                                            }
                                         }
                                         else if (CMD == CMD_FELLOW_TEST)
                                         {
-                                            if (draw_fellow_test_curce)
-                                            {
-                                                if (!fellow_test_curce_added)
-                                                {
-                                                    x_Excitation.Clear();
-                                                    y_Excitation.Clear();
-                                                    zGraph1.f_AddPix(ref x_Excitation, ref y_Excitation, Color.Blue, 1);
-                                                    fellow_test_curce_added = true;
-                                                }
-                                                x_Excitation.Add(count_clock);
-                                                y_Excitation.Add(CMD_data);
-                                            }
                                         }
                                         else if (CMD == CMD_PITCH)
                                         {
-                                            label20.Text = CMD_data.ToString();
-                                            if (draw_pitch_curce)
-                                            {
-                                                if (!pitch_curce_added)
-                                                {
-                                                    x_pitch.Clear();
-                                                    y_pitch.Clear();
-                                                    zGraph1.f_AddPix(ref x_pitch, ref y_pitch, Color.Yellow, 1);
-                                                    pitch_curce_added = true;
-                                                }
-                                                x_pitch.Add(count_clock);
-                                                y_pitch.Add(CMD_data);
-                                                count_pitch++;
-                                            }
                                         }
                                         else if (CMD == CMD_YAW)
                                         {
-                                            label20.Text = CMD_data.ToString();
-                                            if (draw_yaw_curce)
-                                            {
-                                                if (!yaw_curce_added)
-                                                {
-                                                    x_yaw.Clear();
-                                                    y_yaw.Clear();
-                                                    zGraph1.f_AddPix(ref x_yaw, ref y_yaw, Color.Red, 1);
-                                                    yaw_curce_added = true;
-                                                }
-                                                x_yaw.Add(count_clock);
-                                                y_yaw.Add(CMD_data);
-                                            }
                                         }
-                                        if (count_clock % 50 == 0)
-                                            zGraph1.f_Refresh();
                                         
                                     }
                                     else
@@ -413,7 +321,6 @@ namespace Drawer
                             else
                                 buffer_index++;
                         }
-                        label6.Text = count.ToString();
                     }
                 }
                 catch { }
@@ -608,20 +515,7 @@ namespace Drawer
 
         private void button5_Click(object sender, EventArgs e)
         {
-            timer1.Start();
             count = 0;
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            label4.Text = (count).ToString() + "个/s";
-            count = 0;
-            label12.Text = (now_pitch - pre_pitch).ToString();
-            pre_pitch = now_pitch;
-            label13.Text = (now_yaw - pre_yaw).ToString();
-            pre_yaw = now_yaw;
-            label14.Text = (now_roll - pre_roll).ToString();
-            pre_roll = now_roll;
         }
 
         private void label9_Click(object sender, EventArgs e)
@@ -931,7 +825,6 @@ namespace Drawer
 
         private void timerDraw_Tick(object sender, EventArgs e)
         {
-            zGraph1.f_Refresh();
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -953,17 +846,6 @@ namespace Drawer
             {
                 draw_yaw_curce = false;
                 yaw_curce_added = false;
-            }
-        }
-
-        private void checkBox4_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox4.Checked)
-                draw_fellow_test_curce = true;
-            else
-            {
-                draw_fellow_test_curce = false;
-                fellow_test_curce_added = false;
             }
         }
     }
