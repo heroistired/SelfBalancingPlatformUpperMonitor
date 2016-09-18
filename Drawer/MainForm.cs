@@ -18,7 +18,6 @@ namespace Drawer
     public delegate int GetMainWidth();
     public partial class MainForm : Form
     {
-        Drawer Displayer;
         private int count = 0, speed;
         private float pre_pitch = 0, pre_yaw = 0, pre_roll = 0, now_pitch = 0, now_yaw = 0, now_roll = 0, kp, ki, kd;
         private string buffer = ""; //存储某次接收时被截断的指令，以便下次拼接
@@ -89,46 +88,8 @@ namespace Drawer
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;                   //
         }
 
-        public void ClosePort()//关闭串口，供委托调用
-        {
-            try
-            {
-                serialPort1.Close();
-            }
-            catch (System.Exception)
-            {
-            	
-            }
-        }
-
-        private Point GetMyPos()//供委托调用
-        {
-            return this.Location;
-        }
-
-        public void OpenPort()//打开串口，供委托调用
-        {
-            try
-            {
-                serialPort1.Open();
-            }
-            catch (System.Exception)
-            {
-                MessageBox.Show("串口打开失败，请检查", "错误");
-            }
-        }
-        public void ShowMe()//供委托调用
-        {
-            this.Show();
-        }
-        public void HideMe()//供委托调用
-        {
-            this.Hide();
-        }
         private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            if (!radioButton3.Checked)
-            {
                 string data = buffer + serialPort1.ReadExisting();
                 string[] sArray = data.Split(' ');
 
@@ -231,126 +192,10 @@ namespace Drawer
                         }
                     }
                 }
-                if (!draw_fellow_test_curce)
-                {
                     textBox1.AppendText(data);                                //串口类会自动处理汉字，所以不需要特别转换
-                }
-             
-                
-
-            }
-            else
-            {
-                try
-                {
-                    byte[] data = new byte[serialPort1.BytesToRead];                                //定义缓冲区，因为串口事件触发时有可能收到不止一个字节
-                    byte checksum = (byte)0;
-                    int j = 0, p = data.Length;
-                    UInt16 CMD = 0;
-                    int CMD_data = 0;
-                    byte Member = 0x00, Member_next = 0x00, Member_next_next = 0x00;
-                    serialPort1.Read(data, 0, data.Length);
-                    if (Displayer != null)
-                        Displayer.AddData(data);
-                    while(j < data.Length)                                                   //遍历用法
-                    {
-                        Member = data[j];
-                        if (j <= data.Length - 3)
-                        {
-                            Member_next = data[j + 1];
-                            Member_next_next = data[j + 2];
-                        }
-                        else
-                        {
-                            Member_next = 0x00;
-                            Member_next_next = 0x00;
-                        }
-                        j++;
-                        if (textbox_show_data)
-                        {
-                            string str = Convert.ToString(Member, 16).ToUpper();
-                            textBox1.AppendText("0x" + (str.Length == 1 ? "0" + str : str) + " ");
-                        }
-                        if (Member == 0xEE && Member_next == 0xCC && Member_next_next == 0xAA && !frame_head_founded)
-                        {
-                            buffer1[buffer_index] = Member;
-                            buffer_index++;
-                            frame_head_founded = true;
-                        }
-                        else if (frame_head_founded)
-                        {
-                            buffer1[buffer_index] = Member;
-                            if(buffer_index==10)
-                            {
-                                if(buffer1[10] == 0x0A)
-                                {
-                                    //textBox1.AppendText("haha/n");
-                                    /*checksum = (byte)0;
-                                    for (int k = 3; k < 9; k++)
-                                    {
-                                        checksum += buffer1[k];
-                                    }*/
-                                    if (buffer1[9] == buffer1[9])//checksum) //校验通过 则解析每帧中的命令和数据
-                                    {
-                                        count++;
-                                        CMD = BitConverter.ToUInt16(new byte[] {buffer1[4], buffer1[3]}, 0);
-                                        CMD_data = BitConverter.ToInt32(new byte[] { buffer1[8], buffer1[7], buffer1[6], buffer1[5] }, 0);
-                                        Array.Clear(buffer1, 0, 11);
-                                        if (CMD == CMD_CLOCK)
-                                        {
-                                        }
-                                        else if (CMD == CMD_FELLOW_TEST)
-                                        {
-                                        }
-                                        else if (CMD == CMD_PITCH)
-                                        {
-                                        }
-                                        else if (CMD == CMD_YAW)
-                                        {
-                                        }
-                                        
-                                    }
-                                    else
-                                        textBox1.AppendText("校验失败！"+'\n');
-                                }
-                                else
-                                    textBox1.AppendText("数据丢帧！" + '\n');
-                                frame_head_founded = false;
-                                buffer_index=0;
-                            }  
-                            else
-                                buffer_index++;
-                        }
-                    }
-                }
-                catch { }
-            }
         }
 
-        private void CreateNewDrawer()//创建ADC绘制窗口
-        {
-            Displayer = new Drawer();//创建新对象
-            Displayer.ShowMainWindow = new ShowWindow(ShowMe);//初始化类成员委托
-            Displayer.HideMainWindow = new HideWindow(HideMe);
-            Displayer.GetMainPos = new GetMainPos(GetMyPos);
-            Displayer.CloseSerialPort = new ClosePort(ClosePort);
-            Displayer.OpenSerialPort = new OpenPort(OpenPort);
-            Displayer.GetMainWidth = new GetMainWidth(GetMyWidth);
-            Displayer.Show();//显示窗口
-        }
 
-        int GetMyWidth()//供委托调用
-        {
-            return this.Width;
-        }
-
-        private void CreateDisplayer()
-        {
-            this.Left = 0;
-            CreateNewDrawer();
-            Rectangle Rect = Screen.GetWorkingArea(this);
-            Displayer.SetWindow(Rect.Width - this.Width, new Point(this.Width, this.Top));//设置绘制窗口宽度，以及坐标
-        }
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -403,51 +248,6 @@ namespace Drawer
                 catch
                 {
                     MessageBox.Show("端口错误", "错误");
-                }
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            byte[] Data = new byte[1];                                                         //单字节发数据     
-            if (serialPort1.IsOpen)
-            {
-                if (textBox2.Text != "")
-                {
-                    if (!radioButton1.Checked)
-                    {
-                        try
-                        {
-                            serialPort1.Write(textBox2.Text);
-                            //serialPort1.WriteLine();                             //字符串写入
-                        }
-                        catch
-                        {
-                            MessageBox.Show("串口数据写入错误", "错误");
-                        }
-                    }
-                    else                                                                    //数据模式
-                    {
-                        try                                                                 //如果此时用户输入字符串中含有非法字符（字母，汉字，符号等等，try，catch块可以捕捉并提示）
-                        {
-                            for (int i = 0; i < (textBox2.Text.Length - textBox2.Text.Length % 2) / 2; i++)//转换偶数个
-                            {
-                                Data[0] = Convert.ToByte(textBox2.Text.Substring(i * 2, 2), 16);           //转换
-                                serialPort1.Write(Data, 0, 1);
-                            }
-                            if (textBox2.Text.Length % 2 != 0)
-                            {
-                                Data[0] = Convert.ToByte(textBox2.Text.Substring(textBox2.Text.Length - 1, 1), 16);//单独处理最后一个字符
-                                serialPort1.Write(Data, 0, 1);                              //写入
-                            }
-                            //Data = Convert.ToByte(textBox2.Text.Substring(textBox2.Text.Length - 1, 1), 16);
-                            //  }
-                        }
-                        catch
-                        {
-                            MessageBox.Show("数据转换错误，请输入数字。", "错误");
-                        }
-                    }
                 }
             }
         }

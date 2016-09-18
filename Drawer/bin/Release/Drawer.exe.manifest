@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Drawer.exe" size="38912">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Drawer.exe" size="32768">
       <assemblyIdentity name="Drawer" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>R7i8k8hy+7I5QozI3++WaERrb6s=</dsig:DigestValue>
+        <dsig:DigestValue>CqFWmelIDmRvDaGnoyY72DisnXs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

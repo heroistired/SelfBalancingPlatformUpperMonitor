@@ -53,7 +53,6 @@ C:\Users\heroistired\Downloads\第20、21集：相关程序\串口数据的波�
 C:\Users\heroistired\Downloads\第20、21集：相关程序\串口数据的波形显示软件\Drawer\bin\Release\Drawer.exe
 C:\Users\heroistired\Downloads\第20、21集：相关程序\串口数据的波形显示软件\Drawer\bin\Release\Drawer.pdb
 C:\Users\heroistired\Downloads\第20、21集：相关程序\串口数据的波形显示软件\Drawer\obj\Release\Drawer.csprojResolveAssemblyReference.cache
-C:\Users\heroistired\Downloads\第20、21集：相关程序\串口数据的波形显示软件\Drawer\obj\Release\Drawer.Drawer.resources
 C:\Users\heroistired\Downloads\第20、21集：相关程序\串口数据的波形显示软件\Drawer\obj\Release\Drawer.MainForm.resources
 C:\Users\heroistired\Downloads\第20、21集：相关程序\串口数据的波形显示软件\Drawer\obj\Release\Drawer.Properties.Resources.resources
 C:\Users\heroistired\Downloads\第20、21集：相关程序\串口数据的波形显示软件\Drawer\obj\Release\Drawer.csproj.GenerateResource.Cache
