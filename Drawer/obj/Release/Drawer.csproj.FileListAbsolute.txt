@@ -59,3 +59,16 @@ C:\Users\heroistired\Downloads\第20、21集：相关程序\串口数据的波�
 C:\Users\heroistired\Downloads\第20、21集：相关程序\串口数据的波形显示软件\Drawer\obj\Release\Drawer.exe.manifest
 C:\Users\heroistired\Downloads\第20、21集：相关程序\串口数据的波形显示软件\Drawer\obj\Release\Drawer.application
 C:\Users\heroistired\Downloads\第20、21集：相关程序\串口数据的波形显示软件\Drawer\bin\Release\ZGraph.dll
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\obj\Release\Drawer.exe
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\obj\Release\Drawer.pdb
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\obj\Release\Drawer.csprojResolveAssemblyReference.cache
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\obj\Release\Drawer.MainForm.resources
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\obj\Release\Drawer.Properties.Resources.resources
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\obj\Release\Drawer.csproj.GenerateResource.Cache
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\bin\Release\Drawer.exe.manifest
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\bin\Release\Drawer.application
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\bin\Release\Drawer.exe
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\bin\Release\Drawer.pdb
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\bin\Release\ZGraph.dll
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\obj\Release\Drawer.exe.manifest
+C:\Users\heroistired\Documents\Git\机设上位机\SelfBalancingPlatformUpperMonitor\Drawer\obj\Release\Drawer.application

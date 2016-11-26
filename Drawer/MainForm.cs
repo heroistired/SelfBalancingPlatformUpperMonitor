@@ -23,8 +23,15 @@ namespace Drawer
         private string buffer = ""; //存储某次接收时被截断的指令，以便下次拼接
         private byte[] buffer1 = new byte[11]; //存储某次接收时被截断的指令，以便下次拼接，自动初始化为0
         private int buffer_index = 0;
+        private bool textbox_show_data = false;
+
+        private Queue<byte[]> ReceiveInstructionFIFO = new Queue<byte[]>(); //收到指令的队列
         private bool frame_head_founded = false; //数据帧头是否找到
-        private bool textbox_show_data = false; //是否显示串口数据是否找到
+        private int ByteCounter = 0; //计数收到的字节数
+        private byte CheckSum = 0;  //校验和
+        private byte[] FrameData = new byte[6];  //帧数据
+
+
         //上位机发送给下位机的命令
         public const byte CMD_UP = (byte)201;
         public const byte CMD_DOWN = (byte)202;
@@ -88,111 +95,54 @@ namespace Drawer
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;                   //
         }
 
+        /*
+         *  private Queue<byte> ReceiveInstructionFIFO = new Queue<byte>(); //收到指令的队列
+        private bool frame_head_founded = false; //数据帧头是否找到
+        private int ByteCounter = 0; //计数收到的字节数
+        private byte CheckSum = 0;  //校验和
+         private byte[] FrameData = new byte[6];  //帧数据*/
+
         private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-                string data = buffer + serialPort1.ReadExisting();
-                string[] sArray = data.Split(' ');
-
-                if (data[data.Length - 1] != '/')
+            
+            try
+            {
+                byte[] data = new byte[serialPort1.BytesToRead];                                //定义缓冲区，因为串口事件触发时有可能收到不止一个字节
+                serialPort1.Read(data, 0, data.Length);
+                foreach (byte Member in data)                                                   //遍历用法
                 {
-                    buffer = " " + sArray[sArray.Length - 1];
-                    sArray[sArray.Length - 1] = "";
-                }
-
-                foreach (string i in sArray)
-                {
-                    //label26.Text = data;
-                    if (i.Length > 4)
+                    //下面三个if语句前后有时序的关联，不要改变其数据
+                    if (ByteCounter == 6)
                     {
-                        count++;
-                        if(i.Substring(1, 4) == "1001") //CMD_PITCH
+                        if (Member == (byte)0x16) //正确接收到了帧尾
                         {
-                            try
-                            {
-                                now_pitch = float.Parse(i.Substring(5, i.Length - 6));
-                            }
-                            catch
-                            { }
-                            label16.Text = (now_pitch/10).ToString() + "°";
-                            count++;
+                            ReceiveInstructionFIFO.Enqueue(FrameData);
+                            ByteCounter = 0;
+                            frame_head_founded = false;
                         }
-                        else if (i.Substring(1, 4) == "1002") //CMD_YAW
+                        else  //数据帧尾有误，丢弃改帧数据
                         {
-                            try
-                            {
-                                now_yaw = float.Parse(i.Substring(5, i.Length - 6));
-                            }
-                            catch
-                            {}
-                            label17.Text = (now_yaw / 10).ToString() + "°";
-                            count++;
-                        }
-                        else if (i.Substring(1, 4) == "1003") //CMD_ROLL
-                        {
-                        }
-                        else if (i.Substring(1, 4) == "1004") //CMD_DEGREE1
-                        {
-                            try
-                            {
-                                label20.Text = (float.Parse(i.Substring(5, i.Length - 6)) / 10).ToString() + "°";
-                            }
-                            catch
-                            { }
-                        }
-                        else if (i.Substring(1, 4) == "1005") //CMD_DEGREE2
-                        {
-                            try
-                            {
-                                label22.Text = (float.Parse(i.Substring(5, i.Length - 6)) / 10).ToString() + "°";
-                            }
-                            catch
-                            { }
-                        }
-                        else if (i.Substring(1, 4) == "1008") //CMD_KD
-                        {
-                            try
-                            {
-                                label28.Text = (float.Parse(i.Substring(5, i.Length - 6)) / 10000).ToString(); 
-                            }
-                            catch
-                            { }
-                        }
-                        else if (i.Substring(1, 4) == "1006") //CMD_KP
-                        {
-                            try
-                            {
-                                label26.Text = (float.Parse(i.Substring(5, i.Length-6)) / 10000).ToString(); 
-                            }
-                            catch
-                            { }
-                        }
-                        else if (i.Substring(1, 4) == "1007") //CMD_KI
-                        {
-                            try
-                            {
-                                label27.Text = (float.Parse(i.Substring(5, i.Length - 6)) / 10000).ToString(); 
-                            }
-                            catch
-                            { }
-                        }
-                        else if (i.Substring(1, 4) == "1009") //CMD_CTROUT1
-                        {
-                            try
-                            {
-                                label32.Text = (float.Parse(i.Substring(5, i.Length - 6)) / 10).ToString();
-                            }
-                            catch
-                            { }
-                        }
-                        else if (i.Substring(1, 4) == "1010") //CMD_CTROUT2
-                        {
-                        }
-                        else if (i.Substring(1, 4) == "1011") //CMD_FELLOW_TEST
-                        {
+                            ByteCounter = 0;
+                            frame_head_founded = false;
                         }
                     }
+
+                    if (frame_head_founded)
+                    {
+                        FrameData[ByteCounter] = Member;
+                        ByteCounter++;
+                    }
+
+                    if ((Member == (byte)0x68) && (ByteCounter == 0) && (frame_head_founded == false)) //表示找到了帧头
+                    {
+                        frame_head_founded = true;
+                    }
+                    
+                    string str = Convert.ToString(Member, 16).ToUpper();
+                    textBox1.AppendText("0x" + (str.Length == 1 ? "0" + str : str) + " ");
                 }
-                    textBox1.AppendText(data);                                //串口类会自动处理汉字，所以不需要特别转换
+             }
+             catch { }
         }
 
 
@@ -327,7 +277,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_UP, false, (byte)0, 0);
+                //SendCmdData(CMD_UP, false, (byte)0, 0);
             }
             catch
             {
@@ -339,7 +289,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_LEFT, false, (byte)0, 0);
+                //SendCmdData(CMD_LEFT, false, (byte)0, 0);
             }
             catch
             {
@@ -351,7 +301,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_RIGHT, false, (byte)0, 0);
+                //SendCmdData(CMD_RIGHT, false, (byte)0, 0);
             }
             catch
             {
@@ -363,7 +313,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_DOWN, false, (byte)0, 0);
+                //SendCmdData(CMD_DOWN, false, (byte)0, 0);
             }
             catch
             {
@@ -380,7 +330,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_POS_RESET, false, (byte)0, 0);
+                //SendCmdData(CMD_POS_RESET, false, (byte)0, 0);
             }
             catch
             {
@@ -392,7 +342,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_KP_PLUS_1, false, (byte)0, 0);
+                //SendCmdData(CMD_KP_PLUS_1, false, (byte)0, 0);
             }
             catch
             {
@@ -404,7 +354,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_KP_MINUS_1, false, (byte)0, 0);
+                //SendCmdData(CMD_KP_MINUS_1, false, (byte)0, 0);
             }
             catch
             {
@@ -416,7 +366,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_KI_PLUS_1, false, (byte)0, 0);
+                //SendCmdData(CMD_KI_PLUS_1, false, (byte)0, 0);
             }
             catch
             {
@@ -428,7 +378,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_KI_MINUS_1, false, (byte)0, 0);
+                //SendCmdData(CMD_KI_MINUS_1, false, (byte)0, 0);
             }
             catch
             {
@@ -441,7 +391,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_KD_PLUS_1, false, (byte)0, 0);
+                //SendCmdData(CMD_KD_PLUS_1, false, (byte)0, 0);
             }
             catch
             {
@@ -454,7 +404,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_KD_MINUS_1, false, (byte)0, 0);
+                //SendCmdData(CMD_KD_MINUS_1, false, (byte)0, 0);
             }
             catch
             {
@@ -467,37 +417,22 @@ namespace Drawer
             
         }
         
-        //CMD 指令 WithData 是否发送数据，为false时，后面两个参数将被忽略 data 数据 CMD1 保留 
-        private void SendCmdData(byte CMD, bool WithData, byte CMD1, int data)
+        //CMD 指令 data 数据 指令一位，数据四位，帧头帧尾各一位 数据校验一位 一帧数据八个字节 即1Byte
+        private void SendCmdData(byte CMD, byte[] data)
         {
-            byte[] data_byte =   System.BitConverter.GetBytes(data);
-            Array.Reverse(data_byte); 
-            byte[] CMDandDATAtoSEND = new byte[4 + data_byte.Length];
-            if (!WithData)
+            byte[] CMDandDATAtoSEND = new byte[8];
+            if (data.Length == 4)  //如果数据不是四位，则丢弃
             {
-                CMDandDATAtoSEND[0] = CMD;
-                CMDandDATAtoSEND[1] = (byte)0x0d;
-                CMDandDATAtoSEND[2] = (byte)0x0a;
+                CMDandDATAtoSEND[0] = (byte)0x68; //帧头
+                CMDandDATAtoSEND[1] = CMD;
+                for (int i = 0; i < 4; i++)
+                    CMDandDATAtoSEND[2 + i] = data[i];
+                for (int i = 1; i < 6; i++)  //计算校验和
+                    CMDandDATAtoSEND[6] += CMDandDATAtoSEND[i];
+                CMDandDATAtoSEND[7] = (byte)0x16;  //帧尾
                 try
                 {
-                    serialPort1.Write(CMDandDATAtoSEND, 0, 3);
-                }
-                catch
-                {
-                    MessageBox.Show("串口数据写入错误", "错误");
-                }
-            }
-            else
-            {
-                CMDandDATAtoSEND[0] = CMD;
-                CMDandDATAtoSEND[1] = CMD1;
-                for (int i = 0; i < data_byte.Length; i++)
-                    CMDandDATAtoSEND[2 + i] = data_byte[i];
-                CMDandDATAtoSEND[data_byte.Length + 2] = (byte)0x0d;
-                CMDandDATAtoSEND[data_byte.Length + 3] = (byte)0x0a;
-                try
-                {
-                    serialPort1.Write(CMDandDATAtoSEND, 0, 4 + data_byte.Length);
+                    serialPort1.Write(CMDandDATAtoSEND, 0, 8);
                 }
                 catch
                 {
@@ -511,15 +446,15 @@ namespace Drawer
             data = (int)(float.Parse(textBox3.Text) * 10000);
             if (data != 0)
             {
-                if (data > 0)
+                /*if (data > 0) 
                     SendCmdData(CMD_PID_PRARMETRE_STEP_1, true, (byte)1, data);
                 else
-                    SendCmdData(CMD_PID_PRARMETRE_STEP_1, true, (byte)0, data);
+                    SendCmdData(CMD_PID_PRARMETRE_STEP_1, true, (byte)0, data);*/
             }
             else
             {
                 textBox3.Text = (0.0001).ToString();
-                SendCmdData(CMD_PID_PRARMETRE_STEP_1, true, (byte)1, 1);
+                //SendCmdData(CMD_PID_PRARMETRE_STEP_1, true, (byte)1, 1);
             }
         }
 
@@ -533,7 +468,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_POS_RESET, false, (byte)0, 0);
+                //SendCmdData(CMD_POS_RESET, false, (byte)0, 0);
             }
             catch
             {
@@ -545,7 +480,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_KP_PLUS_2, false, (byte)0, 0);
+                //SendCmdData(CMD_KP_PLUS_2, false, (byte)0, 0);
             }
             catch
             {
@@ -557,7 +492,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_KP_MINUS_2, false, (byte)0, 0);
+                //SendCmdData(CMD_KP_MINUS_2, false, (byte)0, 0);
             }
             catch
             {
@@ -569,7 +504,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_KI_PLUS_2, false, (byte)0, 0);
+                //SendCmdData(CMD_KI_PLUS_2, false, (byte)0, 0);
             }
             catch
             {
@@ -581,7 +516,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_KI_MINUS_2, false, (byte)0, 0);
+                //SendCmdData(CMD_KI_MINUS_2, false, (byte)0, 0);
             }
             catch
             {
@@ -593,7 +528,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_KD_PLUS_2, false, (byte)0, 0);
+                //SendCmdData(CMD_KD_PLUS_2, false, (byte)0, 0);
             }
             catch
             {
@@ -605,7 +540,7 @@ namespace Drawer
         {
             try
             {
-                SendCmdData(CMD_KD_MINUS_2, false, (byte)0, 0);
+                //SendCmdData(CMD_KD_MINUS_2, false, (byte)0, 0);
             }
             catch
             {
@@ -648,5 +583,34 @@ namespace Drawer
                 yaw_curce_added = false;
             }
         }
+        private void checkBox13_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            byte[] data = new byte[] { 0x01, 0x02, 0x03, 0x04 };
+            try
+            {
+                SendCmdData((byte)0x01, data);
+            }
+            catch
+            {
+                MessageBox.Show("串口数据写入错误", "错误");
+
+            }
+        }
+
+        private void label34_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
